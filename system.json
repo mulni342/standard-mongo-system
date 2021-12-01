@@ -4,5 +4,8 @@
     "version": "0.1.0",
     "description": "this system was originally made to fullies most of the normal bots need!",
     "repo": "https://github.com/mulni342/standard-mongo-system.git",
-    "main": "dist/index.js"
+    "main": "dist/index.js",
+    "dependencies": {
+        "discord.js": "^13.3.1"
+    }
 }
