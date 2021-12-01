@@ -20,7 +20,7 @@ export class System {
     }
 
     loginToken(): string {
-        return 'OTA1OTI5NTM3MzI0NDQ5Nzky.YYROoQ.oG4Nj-BXxdJKexL2J-tP3hXzJFU';
+        return '';
     }
 
     onMessage(message: discord.Message) {
