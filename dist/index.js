@@ -17,7 +17,7 @@ var System = /** @class */ (function () {
         console.log('Bot Is online!');
     };
     System.prototype.loginToken = function () {
-        return 'OTA1OTI5NTM3MzI0NDQ5Nzky.YYROoQ.oG4Nj-BXxdJKexL2J-tP3hXzJFU';
+        return process.env.TOKEN;
     };
     System.prototype.onMessage = function (message) {
         var prefix = process.env.PREFIX || 'ab!';
