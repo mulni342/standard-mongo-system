@@ -20,7 +20,7 @@ export class System {
     }
 
     loginToken(): string {
-        return '';
+        return process.env.TOKEN;
     }
 
     onMessage(message: discord.Message) {
