@@ -2,24 +2,37 @@
 // import { BaseSystem } from '../../types/types';
 
 import * as discord from 'discord.js';
+import { checkConfigDocument } from './setup';
+import { Client } from 'botasm';
+import mongoose from 'mongoose';
 
 export class System {
-    client: any;
+    client: Client;
 
-    constructor(client: any) {
+    constructor(client: Client) {
         if (client.debugLogs) console.log('system install created!');
         this.client = client;
     }
 
     init() {
         if (this.client.debugLogs) console.log('system was initialized!');
+
+        if (!process.env.URI)
+            throw Error('Database URI not define in enviroment variables');
+
+        mongoose.connect(process.env.URI, () => {
+            if (this.client.debugLogs) {
+                console.log('Database connected!');
+            }
+        });
     }
 
     onReady() {
         console.log('Bot Is online!');
+        checkConfigDocument(this.client);
     }
 
-    loginToken(): string {
+    loginToken(): string | undefined {
         return process.env.TOKEN;
     }
 
