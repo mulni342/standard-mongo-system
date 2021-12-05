@@ -10,10 +10,10 @@ export function checkConfigDocument(client: Client) {
         if (!guild) {
             new Guilds({
                 id: Guild.id,
-                language: 'EN',
+                language: process.env.LANGUAGE || 'EN',
                 name: Guild.name,
                 ownerId: Guild.ownerId,
-                prefix: 'p!',
+                prefix: process.env.PREFIX || 'p!',
             }).save();
 
             if (client.debugLogs) {

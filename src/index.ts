@@ -5,6 +5,7 @@ import * as discord from 'discord.js';
 import { checkConfigDocument } from './setup';
 import { Client } from 'botasm';
 import mongoose from 'mongoose';
+import { Guilds } from './models/guilds';
 
 export class System {
     client: Client;
@@ -36,8 +37,42 @@ export class System {
         return process.env.TOKEN;
     }
 
-    onMessage(message: discord.Message) {
-        const prefix = process.env.PREFIX || 'ab!';
+    async getPrefix(Guild: discord.Guild | null): Promise<string> {
+        if (!Guild) return process.env.PREFIX || 'p!';
+        let prefix;
+
+        const guild = await Guilds.findOne({
+            id: Guild.id,
+        });
+
+        if (guild?.prefix) {
+            prefix = guild?.prefix;
+        } else {
+            prefix = process.env.PREFIX || 'p!';
+        }
+
+        return prefix;
+    }
+
+    async getLanguage(Guild: discord.Guild | null): Promise<string> {
+        if (!Guild) return process.env.LANGUAGE || 'EN';
+        let language;
+
+        const guild = await Guilds.findOne({
+            id: Guild.id,
+        });
+
+        if (guild?.language) {
+            language = guild?.language;
+        } else {
+            language = process.env.LANGUAGE || 'EN';
+        }
+
+        return language;
+    }
+
+    async onMessage(message: discord.Message) {
+        const prefix = await this.getPrefix(message.guild);
 
         if (!message.content.startsWith(prefix)) return;
 
@@ -47,7 +82,10 @@ export class System {
         this.client.runCommand(command, message, margs);
     }
 
-    commandArguments() {
-        return [];
+    async commandArguments(message: discord.Message) {
+        return {
+            language: await this.getLanguage(message.guild),
+            prefix: await this.getPrefix(message.guild),
+        };
     }
 }
